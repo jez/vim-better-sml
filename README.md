@@ -20,7 +20,7 @@ will get you up to speed.
 
 - [x] Highlight `=>` correctly as a single operator
 - [x] Highlight type variables
-- [x] Set up conceal characters for common type variables (i.e., `'a -> α`)
+- [x] Set up conceal characters for common type variables (i.e., `'a -> α`, or `'a -> 'α` if you prefer; see "Configuration" below)
 - [x] Highlight `fun` and `fn` with `Function` instead of `Keyword`
 - [x] Set up conceal characters for `fn -> λ.`
 
@@ -84,6 +84,13 @@ will get you up to speed.
   - [x] Set up `*.sig` and `*.sml` as alternate extensions (similar to `*.h` and
     `*.cpp`)
 
+## Configuration
+
+The following settings are currently supported. To change the value of a variable, add `let g:var = 88` to your vimrc file (replacing `g:var` with the name of the variable and `88` with the desired value). To force the settings to take effect, either restart vim or write `:syntax enable<CR>`.
+
+| variable                      | default | meaning                                                                                    |
+|-------------------------------|---------|--------------------------------------------------------------------------------------------|
+| `g:sml_greek_tyvar_show_tick` | 0       | when nonzero, render Greek type variables as `'α` instead of just `α`, preserving the tick |
 
 ## License
 

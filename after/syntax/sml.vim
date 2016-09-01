@@ -13,6 +13,18 @@
 "
 "       au! FileType sml setlocal conceallevel=2
 "
+"   To not hide the tick in Greek type variables (i.e., use 'a -> 'α
+"   instead of 'a -> α), add
+"
+"       let g:sml_greek_tyvar_show_tick = 1
+"
+"   to your vimrc.
+"
+
+" Initialize settings (just for consistency)
+if !exists('g:sml_greek_tyvar_show_tick')
+    let g:sml_greek_tyvar_show_tick = 0
+endif
 
 " Fix wonky highlighting for => operator
 syn match smlOperator  "=>"
@@ -20,53 +32,67 @@ syn match smlOperator  "=>"
 " Also highlight 'NOTE' and 'Note' in comments
 syn keyword  smlTodo contained NOTE Note
 
-" Highlight type variables (i.e., tokens that look like 'xyz)
-syn match smlType "\<'\w\+\>"
+" Highlight type variables (i.e., tokens that look like 'xyz).
+syn match smlType "\<'\w\+\>" contains=smlGreekTyvar
 
-" Add conceal characters for common greek letters
-" that are used for type variables
-syn match smlType "'a\>"               conceal cchar=α
-syn match smlType "'alpha\>"           conceal cchar=α
-syn match smlType "'b\>"               conceal cchar=β
-syn match smlType "'beta\>"            conceal cchar=β
-syn match smlType "'c\>"               conceal cchar=γ
-syn match smlType "'gamma\>"           conceal cchar=γ
-syn match smlType "'d\>"               conceal cchar=δ
-syn match smlType "'delta\>"           conceal cchar=δ
-syn match smlType "'e\>"               conceal cchar=ε
-syn match smlType "'epsilon\>"         conceal cchar=ε
+" Add conceal characters for common Greek letters
+" that are used for type variables.
+hi def link smlGreekTyvar smlType
+function! s:ConcealTyvar(tyvar, cchar)
+    let l:tick = "'"
+    if g:sml_greek_tyvar_show_tick
+        let l:tick = '\%(' . l:tick . '\)\@<='
+    endif
+    " The pattern looks like  'a\>  or  \%('\)\@<=a\>, depending on the
+    " value of `g:sml_greek_tyvar_show_tick`.
+    let l:pattern = l:tick . a:tyvar . '\>'
+    let l:options = 'contained conceal cchar=' . a:cchar
+    let l:cmd = 'syn match smlGreekTyvar "' . l:pattern . '" ' . l:options
+    exec l:cmd
+endfunction
 
-syn match smlType "'zeta\>"            conceal cchar=ζ
-syn match smlType "'eta\>"             conceal cchar=η
-syn match smlType "'theta\>"           conceal cchar=θ
-syn match smlType "'kappa\>"           conceal cchar=κ
-syn match smlType "'lambda\>"          conceal cchar=λ
+call s:ConcealTyvar('a', 'α')
+call s:ConcealTyvar('alpha', 'α')
+call s:ConcealTyvar('b', 'β')
+call s:ConcealTyvar('beta', 'β')
+call s:ConcealTyvar('c', 'γ')
+call s:ConcealTyvar('gamma', 'γ')
+call s:ConcealTyvar('d', 'δ')
+call s:ConcealTyvar('delta', 'δ')
+call s:ConcealTyvar('e', 'ε')
+call s:ConcealTyvar('epsilon', 'ε')
 
-syn match smlType "'m\>"               conceal cchar=μ
-syn match smlType "'mu\>"              conceal cchar=μ
-syn match smlType "'n\>"               conceal cchar=ν
-syn match smlType "'nu\>"              conceal cchar=ν
+call s:ConcealTyvar('zeta', 'ζ')
+call s:ConcealTyvar('eta', 'η')
+call s:ConcealTyvar('theta', 'θ')
+call s:ConcealTyvar('kappa', 'κ')
+call s:ConcealTyvar('lambda', 'λ')
 
-syn match smlType "'xi\>"              conceal cchar=ξ
+call s:ConcealTyvar('m', 'μ')
+call s:ConcealTyvar('mu', 'μ')
+call s:ConcealTyvar('n', 'ν')
+call s:ConcealTyvar('nu', 'ν')
 
-syn match smlType "'p\>"               conceal cchar=π
-syn match smlType "'pi\>"              conceal cchar=π
-syn match smlType "'r\>"               conceal cchar=ρ
-syn match smlType "'rho\>"             conceal cchar=ρ
-syn match smlType "'s\>"               conceal cchar=σ
-syn match smlType "'sigma\>"           conceal cchar=σ
-syn match smlType "'t\>"               conceal cchar=τ
-syn match smlType "'tau\>"             conceal cchar=τ
+call s:ConcealTyvar('xi', 'ξ')
 
-syn match smlType "'upsilon\>"         conceal cchar=υ
-syn match smlType "'phi\>"             conceal cchar=ϕ
-syn match smlType "'x\>"               conceal cchar=χ
-syn match smlType "'chi\>"             conceal cchar=χ
+call s:ConcealTyvar('p', 'π')
+call s:ConcealTyvar('pi', 'π')
+call s:ConcealTyvar('r', 'ρ')
+call s:ConcealTyvar('rho', 'ρ')
+call s:ConcealTyvar('s', 'σ')
+call s:ConcealTyvar('sigma', 'σ')
+call s:ConcealTyvar('t', 'τ')
+call s:ConcealTyvar('tau', 'τ')
 
-syn match smlType "'psi\>"             conceal cchar=ψ
+call s:ConcealTyvar('upsilon', 'υ')
+call s:ConcealTyvar('phi', 'ϕ')
+call s:ConcealTyvar('x', 'χ')
+call s:ConcealTyvar('chi', 'χ')
 
-syn match smlType "'w\>"               conceal cchar=ω
-syn match smlType "'omega\>"           conceal cchar=ω
+call s:ConcealTyvar('psi', 'ψ')
+
+call s:ConcealTyvar('w', 'ω')
+call s:ConcealTyvar('omega', 'ω')
 
 " --- Coneal lambda functions with lambda ---
 " We need to redefine fn as a 'match', not a 'keyword' because 'keyword' takes
