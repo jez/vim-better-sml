@@ -20,7 +20,7 @@ let b:did_indent = 1
 
 setlocal expandtab
 setlocal indentexpr=GetSMLIndent()
-setlocal indentkeys+=0=and,0=else,0=end,0=handle,0=if,0=in,0=let,0=then,0=val,0=fun,0=of,0=\|,0=*),0)
+setlocal indentkeys+=0=and,0=else,0=end,0=handle,0=if,0=in,0=let,0=local,0=then,0=val,0=fun,0=of,0=\|,0=*),0)
 setlocal nolisp
 setlocal nosmartindent
 setlocal textwidth=80
@@ -39,10 +39,10 @@ endif
 
 " Define some patterns:
 let s:beflet = '^\s*\(initializer\|method\|try\)\|\(\<\(begin\|do\|else\|in\|then\|try\)\|->\|;\)\s*$'
-let s:letpat = '^\s*\(let\|type\|module\|class\|open\|exception\|val\|include\|external\)\>'
+let s:letpat = '^\s*\(let\|local\|type\|module\|class\|open\|exception\|val\|include\|external\)\>'
 let s:letlim = '\(\<\(sig\|struct\)\|;;\)\s*$'
-let s:lim = '^\s*\(exception\|external\|include\|let\|module\|open\|type\|val\)\>'
-let s:module = '\<\%(let\|sig\|struct\)\>'
+let s:lim = '^\s*\(exception\|external\|include\|let\|local\|module\|open\|type\|val\)\>'
+let s:module = '\<\%(let\|local\|sig\|struct\)\>'
 let s:obj = '^\s*\(constraint\|inherit\|initializer\|method\|val\)\>\|\<\(object\|object\s*(.*)\)\s*$'
 let s:type = '^\s*\%(let\|type\)\>.*='
 let s:val = '^\s*\(val\|external\)\>.*:'
@@ -146,9 +146,9 @@ function! GetSMLIndent()
   elseif line =~ '^\s*\]'
     return s:FindPair('\[','','\]')
 
-  " Indent current line starting with 'in' to last matching 'let'
+  " Indent current line starting with 'in' to last matching 'let' or 'local'
   elseif line =~ '^\s*in\>'
-    let ind = s:FindLet('\<let\>','','\<in\>')
+    let ind = s:FindLet('\<let\|local\>','','\<in\>')
 
   " Indent from last matching module if line matches:
   elseif line =~ '^\s*\(fun\|val\|open\|structure\|and\|datatype\|type\|exception\)\>'
@@ -183,7 +183,7 @@ function! GetSMLIndent()
 
   " Indent if last line ends with 'sig', 'struct', 'let', 'then', 'else',
   " 'in'
-  elseif lline =~ '\<\(sig\|struct\|let\|in\|then\|else\)\s*$'
+  elseif lline =~ '\<\(sig\|struct\|let\|local\|in\|then\|else\)\s*$'
     let ind = ind + &sw
 
   " Indent if last line ends with 'of', align from 'case'
