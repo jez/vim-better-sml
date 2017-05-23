@@ -30,11 +30,20 @@ let b:delimitMate_quotes = '"'
 " ----- scrooloose/syntastic -----
 " Attempt to detect CM files in SML/NJ checker
 if exists('g:loaded_syntastic_plugin')
+    let s:smlnj_args = ''
+    if exists('g:syntastic_sml_no_polyeq') && g:syntastic_sml_no_polyeq != 0
+      echo "hello kek"
+      let s:smlnj_args .= '-Ccontrol.poly-eq-warn=false '
+    endif
     let s:cm = syntastic#util#findGlobInParent('*.cm', expand('%:p:h', 1))
     if s:cm !=# ''
       let s:buf = bufnr('')
-      call setbufvar(s:buf, 'syntastic_sml_smlnj_args', '-m ' . syntastic#util#shescape(s:cm))
+      let s:smlnj_args .= '-m ' . syntastic#util#shescape(s:cm)
+      " It might be neater to make this only happen once or something
+      call setbufvar(s:buf, 'syntastic_sml_smlnj_args', s:smlnj_args)
       call setbufvar(s:buf, 'syntastic_sml_smlnj_fname', '')
+    else
+      call setbufvar(s:buf, 'syntastic_sml_smlnj_args', s:smlnj_args)
     endif
 endif
 
