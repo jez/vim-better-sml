@@ -2,6 +2,12 @@ structure Util =
 struct
   fun println str = print (str ^ "\n")
 
+  fun printErr str =
+    (TextIO.output (TextIO.stdErr, str);
+     TextIO.flushOut TextIO.stdErr)
+
+  fun printErrLn str = printErr (str ^ "\n")
+
   val isUse : string -> bool = String.isPrefix "    "
 
   val resolve = OS.FileSys.realPath o OS.FileSys.fullPath

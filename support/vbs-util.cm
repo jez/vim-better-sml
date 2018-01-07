@@ -1,8 +1,10 @@
 Group is
   $/basis.cm
+  $/json-lib.cm
 
   util.sml
 
+  config.sml
   invert-def-use.sml
   unused-defs.sml
 

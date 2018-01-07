@@ -7,8 +7,6 @@ struct
       OS.Process.exit (main args)
     end
 
-  val foo = 42
-
   fun exit status =
     if OS.Process.isSuccess status
     then status
@@ -18,12 +16,14 @@ struct
        println "Usage:";
        println "  vbs-util invert <file>.du";
        println "  vbs-util unused <file>.du";
+       println "  vbs-util config <file>.json <key>[.<key>...]";
        status)
 
   fun main' argv =
     case argv
       of "invert"::rest => exit (InvertDefUse.invert rest)
        | "unused"::rest => exit (UnusedDefs.unused rest)
+       | "config"::rest => exit (Config.get rest)
        | _ => exit OS.Process.failure
 
   fun main () = makeMain main' ()

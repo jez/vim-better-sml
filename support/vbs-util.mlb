@@ -1,7 +1,12 @@
 $(SML_LIB)/basis/basis.mlb
+$(SML_LIB)/smlnj-lib/JSON/json-lib.mlb
 
 util.sml
+(* MLton hasn't yet ported json-util.sml from the SML/NJ Library *)
+(* because it was only added ~recently (SML/NJ 110.81). *)
+json-util.sml
 
+config.sml
 invert-def-use.sml
 unused-defs.sml
 
