@@ -30,12 +30,19 @@ let b:delimitMate_quotes = '"'
 " ----- scrooloose/syntastic -----
 " Attempt to detect CM files in SML/NJ checker
 if exists('g:loaded_syntastic_plugin')
-    let s:cm = syntastic#util#findGlobInParent('*.cm', expand('%:p:h', 1))
+    let s:cm = bettersml#util#GetCmFileOrEmpty()
     if s:cm !=# ''
       let s:buf = bufnr('')
       call setbufvar(s:buf, 'syntastic_sml_smlnj_fname', '')
       call setbufvar(s:buf, 'syntastic_sml_smlnj_post_args', '-m ' . syntastic#util#shescape(s:cm))
     endif
+endif
+
+" ----- w0rp/ale -----
+" Set b:sml_smlnj_cm_file using config from JSON file
+if exists('g:loaded_ale')
+  let s:buf = bufnr('')
+  call setbufvar(s:buf, 'ale_sml_smlnj_cm_file', bettersml#util#GetCmFilePattern())
 endif
 
 " ----- a.vim -----
