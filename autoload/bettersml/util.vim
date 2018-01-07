@@ -6,8 +6,8 @@
 
 let s:scriptroot = fnamemodify(resolve(expand('<sfile>:p')), ':h:h:h')
 
-function! bettersml#util#GetDefUseUtil() abort
-  return s:scriptroot.'/bin/def-use-util'
+function! bettersml#util#GetVbsUtil() abort
+  return s:scriptroot.'/bin/vbs-util'
 endfunction
 
 " Start in directory a:where and walk up the parent folders until it finds a
@@ -49,8 +49,8 @@ endfunction
 
 " Ensure that the *.ud file is up-to-date
 function! bettersml#util#LoadUseDef() abort
-  let defUseUtil = bettersml#util#GetDefUseUtil()
-  if !executable(l:defUseUtil)
+  let vbsUtil = bettersml#util#GetVbsUtil()
+  if !executable(l:vbsUtil)
     echom "Have you built the support files?  :help vim-better-sml-def-use"
     return ''
   endif
@@ -67,7 +67,7 @@ function! bettersml#util#LoadUseDef() abort
 
   " udf doesn't exist or out of date
   if !filereadable(l:udf) || getftime(l:duf) > getftime(l:udf)
-    call system(l:defUseUtil.' invert '.l:duf.' > '.l:udf)
+    call system(l:vbsUtil.' invert '.l:duf.' > '.l:udf)
   endif
 
   return l:udf

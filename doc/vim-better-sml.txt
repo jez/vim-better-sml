@@ -175,7 +175,7 @@ features, like type queries, unused variables, and jump-to-definition.
   - http://mlton.org/Installation
   - On macOS: `brew install mlton`
 
-2. Build `invert-def-use`. This is an SML script used by |vim-better-sml|.
+2. Build the support files.
 
        `cd ~/.vim/bundle/vim-better-sml`
        `make`

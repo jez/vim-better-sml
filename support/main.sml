@@ -13,11 +13,11 @@ struct
     if OS.Process.isSuccess status
     then status
     else
-      (println "def-use-util: A tool for manipulating mlton's def-use files.";
+      (println "vbs-util: A tool for avoiding writing VimL.";
        println "";
        println "Usage:";
-       println "  def-use-util invert <file>.du";
-       println "  def-use-util unused <file>.du";
+       println "  vbs-util invert <file>.du";
+       println "  vbs-util unused <file>.du";
        status)
 
   fun main' argv =

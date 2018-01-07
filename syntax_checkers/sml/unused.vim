@@ -64,7 +64,7 @@ endfunction
 call g:SyntasticRegistry.CreateAndRegisterChecker({
       \ 'filetype': 'sml',
       \ 'name': 'unused',
-      \ 'exec': bettersml#util#GetDefUseUtil() })
+      \ 'exec': bettersml#util#GetVbsUtil() })
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
