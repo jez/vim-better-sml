@@ -20,7 +20,7 @@ setlocal commentstring=(*%s*)
 " To fight back, we explicitly turn off the formatprg here.
 setlocal formatprg=
 
-augroup vimbettersml
+augroup vimbettersmlinternal
   au!
   " Automatically build def use file on save
   if g:sml_auto_create_def_use !=# 'never'
