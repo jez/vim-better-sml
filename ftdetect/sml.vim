@@ -7,4 +7,5 @@ augroup VimBetterSMLFtDetect
   autocmd BufRead,BufNewFile *.cm setlocal filetype=smlcm
   autocmd BufRead,BufNewFile *.mlb setlocal filetype=mlbasis
   autocmd BufRead,BufNewFile *.smackspec set filetype=smackspec
+  autocmd BufRead,BufNewFile *.smi set filetype=sml
 augroup END

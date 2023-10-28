@@ -50,6 +50,12 @@ if exists('g:loaded_ale')
   call setbufvar(s:buf, 'ale_sml_smlnj_cm_file', bettersml#util#GetCmFilePattern())
 endif
 
+if !has_key(g:ale_linters, 'sml')
+  if ale#handlers#smlsharp#GetExecutableSmlsharpFile(bufnr('')) ==# 'smlsharp'
+    let g:ale_linters.sml = ['smlsharp_file']
+  endif
+endif
+
 " ----- a.vim -----
 " Sets up *.sig and *.sml files as "alternates", similar to how *.h and *.c
 " files are alternates

@@ -26,9 +26,10 @@ CONTENTS                                            *vim-better-sml-contents*
        4.1. Building Support Files ........... |vim-better-sml-support|
        4.2. Writing MLBasis Files ............ |vim-better-sml-mlbasis|
        4.3. Building def-use Files ........... |vim-better-sml-def-use|
-    5. Caveats ............................... |vim-better-sml-caveats|
-    6. License & Contributing ................ |vim-better-sml-license|
-    7. Credits ............................... |vim-better-sml-credits|
+    5. Experimental SMLSharp support ......... |vim-better-sml-smlsharp|
+    6. Caveats ............................... |vim-better-sml-caveats|
+    7. License & Contributing ................ |vim-better-sml-license|
+    8. Credits ............................... |vim-better-sml-credits|
 
 
 =============================================================================
@@ -406,6 +407,25 @@ For a multi-file project with MLBasis file `example.mlb`;
     mlton -prefer-abs-paths true -show-def-use example.du -stop tc example.mlb
 <
 (see |vim-better-sml-mlbasis| for how to add an MLBasis file to your project)
+
+
+=============================================================================
+EXPERIMENTAL SMLSHARP SUPPORT                       *vim-better-sml-smlsharp*
+
+SMLSharp (or SML#) is an extension to the SML language with certain
+interesting features (notably: record polymorphism). Read more about it here:
+
+    https://smlsharp.github.io/en/
+
+vim-better-sml includes rudimentary support for working with SML# projects:
+
+- `*.smi` files (SML# interface files) are highlighted using SML syntax
+- An ALE linter is defined, which uses `smlsharp` to surface type errors.
+- There is no additional syntax highligting of features unique to SML# or
+  `*.smi` files.
+
+If any of these features causes interference with existing support for plain
+SML projects, please report an issue.
 
 
 =============================================================================
