@@ -23,8 +23,8 @@ setlocal indentexpr=GetSMLIndent()
 setlocal indentkeys+=0=and,0=else,0=end,0=handle,0=if,0=in,0=let,0=local,0=then,0=val,0=fun,0=of,0=\|,0=*),0)
 setlocal nolisp
 setlocal nosmartindent
-setlocal textwidth=80
-setlocal shiftwidth=2
+" setlocal textwidth=80
+" setlocal shiftwidth=2
 
 " Comment formatting
 if (has("comments"))
