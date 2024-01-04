@@ -9,24 +9,24 @@
 " On Vim, approximates the feature.
 
 function! s:ReportStart(name) abort
-  if exists('*health#report_start()')
-    call health#report_start(a:name)
+  if exists('*v:lua.vim.health.start()')
+    call v:lua.vim.health.start(a:name)
   else
     echom '## '.a:name
   endif
 endfunction
 
 function! s:ReportOk(msg) abort
-  if exists('*health#report_ok()')
-    call health#report_ok(a:msg)
+  if exists('*v:lua.vim.health.ok()')
+    call v:lua.vim.health.ok(a:msg)
   else
     echom '  - ok: '.a:msg
   endif
 endfunction
 
 function! s:ReportWarn(msg, suggestions) abort
-  if exists('*health#report_warn()')
-    call health#report_warn(a:msg, a:suggestions)
+  if exists('*v:lua.vim.health.warn()')
+    call v:lua.vim.health.warn(a:msg, a:suggestions)
   else
     echom '  - warn: '.a:msg
     for l:suggestion in a:suggestions
@@ -36,8 +36,8 @@ function! s:ReportWarn(msg, suggestions) abort
 endfunction
 
 function! s:ReportError(msg, suggestions) abort
-  if exists('*health#report_error()')
-    call health#report_error(a:msg, a:suggestions)
+  if exists('*v:lua.vim.health.error()')
+    call v:lua.vim.health.error(a:msg, a:suggestions)
   else
     echom '  - error: '.a:msg
     for l:suggestion in a:suggestions
