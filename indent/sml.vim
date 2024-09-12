@@ -182,6 +182,8 @@ function! GetSMLIndent() abort
     endif
     if switchLine =~ '\<case\>'
       return col(".") + 2
+    elseif switchLine =~ '\<fun\>'
+        return switchLineIndent
     elseif switchLine =~ '\<handle\>'
       return switchLineIndent + &sw
     elseif switchLine =~ '\<datatype\>'
