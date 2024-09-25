@@ -9,7 +9,9 @@
 " On Vim, approximates the feature.
 
 function! s:ReportStart(name) abort
-  if exists('*health#report_start()')
+  if luaeval('type(vim.health.start) == "function"')
+    call luaeval('vim.health.start(_A)', a:name)
+  elseif exists('*health#report_start()')
     call health#report_start(a:name)
   else
     echom '## '.a:name
@@ -17,7 +19,9 @@ function! s:ReportStart(name) abort
 endfunction
 
 function! s:ReportOk(msg) abort
-  if exists('*health#report_ok()')
+  if luaeval('type(vim.health.ok) == "function"')
+    call luaeval('vim.health.ok(_A)', a:msg)
+  elseif exists('*health#report_ok()')
     call health#report_ok(a:msg)
   else
     echom '  - ok: '.a:msg
@@ -25,7 +29,9 @@ function! s:ReportOk(msg) abort
 endfunction
 
 function! s:ReportWarn(msg, suggestions) abort
-  if exists('*health#report_warn()')
+  if luaeval('type(vim.health.warn) == "function"')
+    call luaeval('vim.health.warn(_A[1], _A[2])', [a:msg, a:suggestions])
+  elseif exists('*health#report_warn()')
     call health#report_warn(a:msg, a:suggestions)
   else
     echom '  - warn: '.a:msg
@@ -36,7 +42,9 @@ function! s:ReportWarn(msg, suggestions) abort
 endfunction
 
 function! s:ReportError(msg, suggestions) abort
-  if exists('*health#report_error()')
+  if luaeval('type(vim.health.error) == "function"')
+    call luaeval('vim.health.error(_A[1], _A[2])', [a:msg, a:suggestions])
+  elseif exists('*health#report_error()')
     call health#report_error(a:msg, a:suggestions)
   else
     echom '  - error: '.a:msg
