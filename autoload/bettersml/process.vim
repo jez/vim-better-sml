@@ -27,6 +27,7 @@ function! bettersml#process#CheckBackend() abort
   let l:backends = {
         \ 'neovim': 1,
         \ 'vimux': 1,
+        \ 'vim8' : 1,
         \ }
   if has_key(l:backends, g:sml_repl_backend)
     return [
@@ -40,7 +41,7 @@ function! bettersml#process#CheckBackend() abort
       \   'error',
       \   'No REPL backend available.',
       \   [
-      \     'To use the SML/NJ REPL, you must either be using Neovim',
+      \     'To use the SML/NJ REPL, you must be using Neovim, Vim 8',
       \     'or be using tmux and have benmills/vimux installed.',
       \   ]
       \ ]
@@ -55,6 +56,10 @@ function! bettersml#process#CheckBackend() abort
 endfunction
 
 " ----- Terminal buffer / pane control --------------------------------------
+
+function! s:ExitCallback(job, exit_code)
+  unlet s:repl_buffer_id
+endfunction
 
 " Creates a new buffer for the SML/NJ repl
 function! bettersml#process#StartBuffer() abort
@@ -101,6 +106,15 @@ function! bettersml#process#StartBuffer() abort
     let g:VimuxResetSequence = 'C-u'
     VimuxRunCommand l:command
 
+  elseif g:sml_repl_backend ==# 'vim8'
+    let l:original_window = win_getid()
+
+    " Need to trim the command to avoid passing '' as a file argument
+    let s:repl_buffer_id = term_start(trim(l:command), {'exit_cb': function('s:ExitCallback')})
+
+    " Switch focus back to original window
+    exe 'silent! ' . win_id2win(l:original_window) . 'wincmd w'
+
   else
     call bettersml#Enforce(bettersml#process#CheckBackend())
 
@@ -115,7 +129,7 @@ function! bettersml#process#KillBuffer() abort
     return
   endif
 
-  if g:sml_repl_backend ==# 'neovim'
+  if g:sml_repl_backend ==# 'neovim' || g:sml_repl_backend ==# 'vim8'
     if bufexists(s:repl_buffer_id)
       " Deleting a terminal buffer implicitly stops the job
       exe 'bdelete! ' . s:repl_buffer_id
@@ -143,6 +157,9 @@ function! bettersml#process#SendCommand(command) abort
     " Vimux hands the command right off to tmux, where ; usually ends up
     " terminating the tmux command, instead of making it through to the repl.
     VimuxRunCommand escape(a:command, ';')
+  elseif g:sml_repl_backend ==# 'vim8'
+    " Send a newline with \<cr>
+    call term_sendkeys(s:repl_buffer_id, a:command . "\<cr>")
   else
     call bettersml#Enforce(bettersml#process#CheckBackend())
   endif

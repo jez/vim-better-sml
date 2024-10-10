@@ -10,6 +10,8 @@ if !exists('g:sml_repl_backend')
     let g:sml_repl_backend = 'neovim'
   elseif exists('$TMUX') && exists(':VimuxRunCommand')
     let g:sml_repl_backend = 'vimux'
+  elseif exists('*term_start')
+    let g:sml_repl_backend = 'vim8'
   else
     let g:sml_repl_backend = ''
   endif
